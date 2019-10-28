@@ -129,9 +129,42 @@ private:
     }
 };
 
+class HeapSort
+        :public Interface{
+public:
+    void sort(int* a,int n){
+        _build_heap(a,n);
+        for(int i=1;i<n;++i){
+            int tmp = a[1];
+            a[1] = a[n-i+1];
+            a[n-i+1] = tmp;
+            _sift_down(a,1,n-i);
+        }
+    }
+private:
+    void _build_heap(int *a,int n){
+        for(int i=n/2;i>=1;i--){
+            _sift_down(a,i,n);
+        }
+    }
+    void _sift_down(int *a ,int start,int n){
+        int i = start,j= 2*start;
+        while(j<=n){
+            if(j+1 <= n && a[j+1]>a[j]) j++;
+            if(a[i]>a[j]) break;
+            int tmp = a[i];
+            a[i] = a[j];
+            a[j] = tmp;
+            i=j;
+            j=2*i;
+        }
+    }
+
+};
+
 int main(){
-    Interface* a = new QuickSort();
-    int b[5] = {3,2,4,1,5};
+    Interface* a = new HeapSort();
+    int b[6] = {0,3,2,4,1,5};
     a->sort(b,5);
     for(auto item:b){
         cout << item << endl;
